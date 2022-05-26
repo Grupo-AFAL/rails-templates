@@ -3,14 +3,8 @@
 # --------------------------------------------------
 #             RSpec github action setup
 # --------------------------------------------------
-def create_github_workflows_directory
-  run 'mkdir .github' unless Dir.exist?('.github')
-  run 'mkdir .github/workflows' unless Dir.exist?('.github/workflows')
-end
-
 def create_rspec_github_action
-  run 'touch .github/workflows/rspec.yml' unless File.exist?('.github/workflows/rspec.yml')
-  append_file "#{Dir.pwd}/.github/workflows/rspec.yml", <<~'YML'
+  file "#{Dir.pwd}/.github/workflows/rspec.yml", <<~'YML'
     name: RSpec Tests
     on:
       push:
@@ -60,9 +54,6 @@ def add_simplecov
 
     SimpleCov.start 'rails' do
       add_filter '/spec/'
-
-      add_filter(/preview.rb/)
-      add_filter(/stories.rb/)
     end
   RUBY
 end
@@ -137,7 +128,6 @@ add_rspec_rails_gem
 rails_command 'generate rspec:install'
 
 puts('Creating Rspec Github Action...')
-create_github_workflows_directory
 create_rspec_github_action
 add_simplecov
 git_ignore_rspec_coverage

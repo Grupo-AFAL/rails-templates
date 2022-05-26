@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 def create_rubocop_yml_configuration
-  run 'touch .rubocop.yml'
-
-  append_file "#{Dir.pwd}/.rubocop.yml", <<~'YML'
+  file "#{Dir.pwd}/.rubocop.yml", <<~'YML'
     require: rubocop-rails
 
     AllCops:
@@ -114,9 +112,7 @@ def add_rubocop_gems
 end
 
 def create_rubocop_github_action
-  run 'touch .github/workflows/rubocop.yml'
-
-  append_file "#{Dir.pwd}/.github/workflows/rubocop.yml", <<~'YML'
+  file "#{Dir.pwd}/.github/workflows/rubocop.yml", <<~'YML'
     name: Rubocop
     on: push
 
