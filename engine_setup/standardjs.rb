@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 def create_standard_js_github_action
-  run 'touch .github/workflows/standardjs.yml'
-
-  append_file "#{Dir.pwd}/.github/workflows/standardjs.yml", <<~'YML'
+  file "#{Dir.pwd}/.github/workflows/standardjs.yml", <<~'YML'
     name: StandardJS
     on: push
 
@@ -24,8 +22,7 @@ def create_standard_js_github_action
 end
 
 def create_babel_config_json
-  run 'touch .babel.config.json' unless File.exist?('.babel.config.json')
-  append_file "#{Dir.pwd}/.babel.config.json", <<~'JSON'
+  file "#{Dir.pwd}/.babel.config.json", <<~'JSON'
     {
       "presets": [
         [
