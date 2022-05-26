@@ -10,3 +10,6 @@ puts "\n\n💎 Welcome to the Rails engine setup! 💎\n\n"
 # Required
 run_template('rspec.rb')
 run_template('rubocop.rb')
+
+# Optional
+run_template('standardjs.rb') if yes?('Do you want to install StandardJS? [Y/n]')
