@@ -1,13 +1,17 @@
 # rails-templates
 
 ## Engine setup
-This setup template includes: 
+
+This setup template includes:
+
 - RSpec
 - Rubocop
+- StandardJS
 
 > **_NOTE:_** Review the code before running this template on your machine.
 
 ### Usage
+
 1. Create a new Rails Engine
    ```
    rails plugin new my-engine-name --mountable

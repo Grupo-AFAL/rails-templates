@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
+def engine_name
+  Dir.pwd.split('/').last
+end
+
 # --------------------------------------------------
 #             RSpec github action setup
 # --------------------------------------------------
-def create_github_workflows_directory
-  run 'mkdir .github' unless Dir.exist?('.github')
-  run 'mkdir .github/workflows' unless Dir.exist?('.github/workflows')
-end
-
 def create_rspec_github_action
-  run 'touch .github/workflows/rspec.yml' unless File.exist?('.github/workflows/rspec.yml')
-  append_file "#{Dir.pwd}/.github/workflows/rspec.yml", <<~'YML'
+  file "#{Dir.pwd}/.github/workflows/rspec.yml", <<~'YML'
     name: RSpec Tests
     on:
       push:
@@ -60,9 +58,6 @@ def add_simplecov
 
     SimpleCov.start 'rails' do
       add_filter '/spec/'
-
-      add_filter(/preview.rb/)
-      add_filter(/stories.rb/)
     end
   RUBY
 end
@@ -107,7 +102,7 @@ def remove_test_dir
   gsub_file "#{Dir.pwd}/.gitignore", %r{/test/dummy/.*}, ''
 end
 
-def add_dependencies_to_gemfile(engine_name)
+def add_dependencies_to_gemfile
   inject_into_file "#{Dir.pwd}/#{engine_name}.gemspec", after: "Gem::Specification.new do |spec|\n" do
     <<~'RUBY'
       spec.add_development_dependency 'rspec-rails'
@@ -128,16 +123,13 @@ end
 # --------------------------------------------------
 puts "\n\nStarting RSpec setup..\n\n"
 
-name = ask("What's yout engine name? (You can check your engine name on the .gemspec file):")
-
 create_dummy_app
 remove_test_dir
-add_dependencies_to_gemfile(name)
+add_dependencies_to_gemfile
 add_rspec_rails_gem
 rails_command 'generate rspec:install'
 
 puts('Creating Rspec Github Action...')
-create_github_workflows_directory
 create_rspec_github_action
 add_simplecov
 git_ignore_rspec_coverage
