@@ -46,7 +46,7 @@ def add_application_view_component_class
     # - Move this file to your correct namespace directory if necessary
     # - Add module according to your engine isolated namespace
     class ApplicationViewComponent < ViewComponentContrib::Base
-      include HtmlElementHelper
+      include Bali::HtmlElementHelper
 
       private
 
@@ -344,42 +344,6 @@ def create_generator
   RUBY
 end
 
-def create_html_element_helper
-  file "#{Dir.pwd}/app/lib/#{engine_name_path}/html_element_helper.rb", <<~'RUBY'
-    # frozen_string_literal: true
-
-    # TODO:
-    # - Move this file to your correct namespace directory if necessary
-    # - Add module according to your engine isolated namespace
-    module HtmlElementHelper
-      def prepend_action(options, action)
-        prepend_data_attribute(options, :action, action)
-      end
-
-      def prepend_controller(options, controller_name)
-        prepend_data_attribute(options, :controller, controller_name)
-      end
-
-      def prepend_class_name(options, class_name)
-        options[:class] = "#{class_name} #{options[:class]}".strip
-        options
-      end
-
-      def hyphenize_keys(options)
-        options.transform_keys { |k| k.to_s.gsub('_', '-') }
-      end
-
-      private
-
-      def prepend_data_attribute(options, attr_name, attr_value)
-        options[:data] ||= {}
-        options[:data][attr_name] = "#{attr_value} #{options[:data][attr_name]}".strip
-        options
-      end
-    end
-  RUBY
-end
-
 def create_view_component_generator
   create_component_html_template
   create_component_spec_template
@@ -389,7 +353,6 @@ def create_view_component_generator
   create_preview_template
   create_stories_template
   create_generator
-  create_html_element_helper
 
   say_status :info, '✅ ViewComponent generator created'
 end
@@ -430,6 +393,12 @@ def create_documentation
   TEXT
 end
 
+def add_bali_view_components
+  append_file "#{Dir.pwd}/Gemfile", <<~'RUBY'
+    gem 'bali_view_components', github: 'Grupo-AFAL/bali-view-components', branch: 'main'
+  RUBY
+end
+
 # --------------------------------------------------
 #                       MAIN
 # --------------------------------------------------
@@ -437,6 +406,7 @@ end
 say_status :info, '💎 Starting ViewComponent setup..'
 
 add_view_component_gem
+add_bali_view_components
 configure_view_component_paths
 add_application_view_component_class
 add_application_view_component_preview_class
