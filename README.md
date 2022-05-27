@@ -7,6 +7,7 @@ This setup template includes:
 - RSpec
 - Rubocop
 - StandardJS
+- ViewComponent
 
 > **_NOTE:_** Review the code before running this template on your machine.
 
