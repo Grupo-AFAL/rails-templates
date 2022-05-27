@@ -397,6 +397,8 @@ def add_bali_view_components
   append_file "#{Dir.pwd}/Gemfile", <<~'RUBY'
     gem 'bali_view_components', github: 'Grupo-AFAL/bali-view-components', branch: 'main'
   RUBY
+
+  say_status :info, '✅ Bali View Components gem added'
 end
 
 # --------------------------------------------------
