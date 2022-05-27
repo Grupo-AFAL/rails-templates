@@ -42,7 +42,9 @@ def add_application_view_component_class
   file "#{Dir.pwd}/app/components/#{engine_name_path}/application_view_component.rb", <<~'RUBY'
     # frozen_string_literal: true
 
-    # TODO: Move this file to your correct namespace directory if necessary
+    # TODO:
+    # - Move this file to your correct namespace directory if necessary
+    # - Add module according to your engine isolated namespace
     class ApplicationViewComponent < ViewComponentContrib::Base
       include HtmlElementHelper
 
@@ -58,10 +60,12 @@ def add_application_view_component_class
 end
 
 def add_application_view_component_preview_class
-  # Example: app/components/my_engine/application_view_component_preview.rb
   file "#{Dir.pwd}/app/components/#{engine_name_path}/application_view_component_preview.rb", <<~'RUBY'
     # frozen_string_literal: true
 
+    # TODO:
+    # - Move this file to your correct namespace directory if necessary
+    # - Add module according to your engine isolated namespace
     class ApplicationViewComponentPreview < ViewComponentContrib::Preview::Base
       self.abstract_class = true
     end
@@ -111,7 +115,7 @@ def configure_rspec
     gem 'capybara', group: :test
   RUBY
 
-  gsub_file "#{Dir.pwd}/spec/spec_helper.rb",
+  gsub_file "#{Dir.pwd}/spec/rails_helper.rb",
             "require_relative '../config/environment'",
             "require File.expand_path('./dummy/config/environment', __dir__)"
 
@@ -243,6 +247,11 @@ def create_generator
   file "#{Dir.pwd}/lib/generators/view_component/view_component_generator.rb", <<~'RUBY'
     # frozen_string_literal: true
 
+    # TODO: 
+    # - Check all your templates lib/generators/view_component/templates
+    # - Add module according to your engine isolated namespace where needed
+
+
     # Based on https://github.com/github/view_component/blob/master/lib/rails/generators/component/component_generator.rb
     class ViewComponentGenerator < Rails::Generators::NamedBase
       source_root File.expand_path('templates', __dir__)
@@ -336,36 +345,36 @@ def create_generator
 end
 
 def create_html_element_helper
-  file "#{Dir.pwd}/lib/#{engine_name}/html_element_helper.rb", <<~'RUBY'
+  file "#{Dir.pwd}/app/lib/#{engine_name_path}/html_element_helper.rb", <<~'RUBY'
     # frozen_string_literal: true
 
-    # TODO: Replace MyEngine with your engine isolated namespace
-    module MyEngine
-      module HtmlElementHelper
-        def prepend_action(options, action)
-          prepend_data_attribute(options, :action, action)
-        end
+    # TODO:
+    # - Move this file to your correct namespace directory if necessary
+    # - Add module according to your engine isolated namespace
+    module HtmlElementHelper
+      def prepend_action(options, action)
+        prepend_data_attribute(options, :action, action)
+      end
 
-        def prepend_controller(options, controller_name)
-          prepend_data_attribute(options, :controller, controller_name)
-        end
+      def prepend_controller(options, controller_name)
+        prepend_data_attribute(options, :controller, controller_name)
+      end
 
-        def prepend_class_name(options, class_name)
-          options[:class] = "#{class_name} #{options[:class]}".strip
-          options
-        end
+      def prepend_class_name(options, class_name)
+        options[:class] = "#{class_name} #{options[:class]}".strip
+        options
+      end
 
-        def hyphenize_keys(options)
-          options.transform_keys { |k| k.to_s.gsub('_', '-') }
-        end
+      def hyphenize_keys(options)
+        options.transform_keys { |k| k.to_s.gsub('_', '-') }
+      end
 
-        private
+      private
 
-        def prepend_data_attribute(options, attr_name, attr_value)
-          options[:data] ||= {}
-          options[:data][attr_name] = "#{attr_value} #{options[:data][attr_name]}".strip
-          options
-        end
+      def prepend_data_attribute(options, attr_name, attr_value)
+        options[:data] ||= {}
+        options[:data][attr_name] = "#{attr_value} #{options[:data][attr_name]}".strip
+        options
       end
     end
   RUBY
