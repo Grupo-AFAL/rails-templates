@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+def engine_name
+  Dir.pwd.split('/').last
+end
+
 # --------------------------------------------------
 #             RSpec github action setup
 # --------------------------------------------------
@@ -98,7 +102,7 @@ def remove_test_dir
   gsub_file "#{Dir.pwd}/.gitignore", %r{/test/dummy/.*}, ''
 end
 
-def add_dependencies_to_gemfile(engine_name)
+def add_dependencies_to_gemfile
   inject_into_file "#{Dir.pwd}/#{engine_name}.gemspec", after: "Gem::Specification.new do |spec|\n" do
     <<~'RUBY'
       spec.add_development_dependency 'rspec-rails'
@@ -119,11 +123,9 @@ end
 # --------------------------------------------------
 puts "\n\nStarting RSpec setup..\n\n"
 
-name = ask("What's yout engine name? (You can check your engine name on the .gemspec file):")
-
 create_dummy_app
 remove_test_dir
-add_dependencies_to_gemfile(name)
+add_dependencies_to_gemfile
 add_rspec_rails_gem
 rails_command 'generate rspec:install'
 
