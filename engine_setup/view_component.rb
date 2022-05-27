@@ -394,6 +394,42 @@ def create_view_component_generator
   say_status :info, '✅ ViewComponent generator created'
 end
 
+def create_documentation
+  file "#{Dir.pwd}/VIEW_COMPONENTS.md", <<~'TEXT'
+    # View Components
+    **GitHub repository:** https://github.com/github/view_component
+
+    View Component library enables the creation of view_components and the integration with Rails
+
+    ## View Component contrib
+    **GitHub repository:** https://github.com/palkan/view_component-contrib
+
+    View Component: extensions, examples and development tools
+
+    This library provides us with several best practices, mainly organizing all component related files
+    in a single folder to keep things organized.
+
+    ## Workflow for generating new components
+
+    ### Generate a new component
+    `rails generate view_component Button label`
+
+    This command will generate a `app/components/button` folder with the following files
+
+    - component.html.erb
+    - component.rb
+    - index.scss
+    - index.js
+    - preview.rb
+    - stories.rb
+
+    > **_NOTE:_**  If you want to skip for example the index.js file, you can run `rails generate view_component Button label --skip_js` to skip it. Other options:  `--skip_test`, `--skip_preview`, `--skip_stories`, `--skip_scss`
+    ## Best Practices
+
+    - Every component should have a root CSS class of `[component-name]-component`
+  TEXT
+end
+
 # --------------------------------------------------
 #                       MAIN
 # --------------------------------------------------
@@ -407,6 +443,7 @@ add_application_view_component_preview_class
 add_view_component_initializer
 configure_rspec
 create_view_component_generator
+create_documentation
 
 run 'bundle install'
 
