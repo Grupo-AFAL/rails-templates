@@ -13,3 +13,4 @@ run_template('rubocop.rb')
 
 # Optional
 run_template('standardjs.rb') if yes?('Do you want to install StandardJS? [Y/n]')
+run_template('view_component.rb') if yes?('Do you want to install ViewComponent? [Y/n]')
