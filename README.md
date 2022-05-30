@@ -8,6 +8,7 @@ This setup template includes:
 - Rubocop
 - StandardJS
 - ViewComponent
+- Cypress
 
 > **_NOTE:_** Review the code before running this template on your machine.
 
