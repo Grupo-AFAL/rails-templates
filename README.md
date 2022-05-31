@@ -4,10 +4,11 @@
 
 This setup template includes:
 
-- RSpec
-- Rubocop
-- StandardJS
-- ViewComponent
+- [RSpec](https://rspec.info/)
+- [Rubocop](https://rubocop.org/)
+- [StandardJS](https://standardjs.com/)
+- [ViewComponent](https://viewcomponent.org/)
+- [Cypress](https://docs.cypress.io/)
 
 > **_NOTE:_** Review the code before running this template on your machine.
 
