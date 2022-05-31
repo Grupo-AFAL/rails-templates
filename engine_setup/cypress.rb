@@ -11,14 +11,26 @@ def git_ignore_cypress_directories
 end
 
 def add_cypress_scripts
-  gsub_file "#{Dir.pwd}/package.json", /"devDependencies": {\n/, <<~'JSON'
-    "scripts": {
-      "build": "yarn --cwd spec/dummy/ install && yarn --cwd spec/dummy/ build",
-      "cy:open": "yarn build && cypress open",
-      "cy:run": "yarn build && cypress run"
-    },
-    "devDependencies": {
-  JSON
+  file_path = "#{Dir.pwd}/package.json"
+  package_json_file = File.read(file_path)
+
+  if package_json_file.include?('scripts')
+    gsub_file file_path, /"scripts": {\n/, <<~'JSON'
+      "scripts": {
+        "build": "yarn --cwd spec/dummy/ install && yarn --cwd spec/dummy/ build",
+        "cy:open": "yarn build && cypress open",
+        "cy:run": "yarn build && cypress run",
+    JSON
+  else
+    gsub_file file_path, /"devDependencies": {\n/, <<~'JSON'
+      "scripts": {
+        "build": "yarn --cwd spec/dummy/ install && yarn --cwd spec/dummy/ build",
+        "cy:open": "yarn build && cypress open",
+        "cy:run": "yarn build && cypress run"
+      },
+      "devDependencies": {
+    JSON
+  end
 
   say_status :info, '✅ Created cypress scripts to run tests'
 end
